@@ -1,247 +1,159 @@
 @extends('layouts.app')
 
-@section('page-title', 'Tableau de bord')
+@section('header', 'Tableau de bord')
 
 @section('content')
-<div class="space-y-6">
-    <!-- Welcome Banner -->
-    <div class="bg-gradient-to-r from-gray-900 to-gray-800 rounded-2xl p-6 text-white shadow-lg">
-        <div class="flex items-center justify-between">
-            <div>
-                <h2 class="text-2xl font-bold mb-2">Bienvenue, {{ auth()->user()->name }} 👋</h2>
-                <p class="text-gray-300">Voici un aperçu de votre système RH aujourd'hui</p>
-            </div>
-            <div class="hidden md:block text-6xl opacity-20">📊</div>
-        </div>
+<div class="space-y-8">
+    <!-- Welcome Section -->
+    <div class="bg-white rounded-lg p-8 shadow-sm border border-gray-200">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-2">Bonjour, {{ auth()->user()->name }}</h2>
+        <p class="text-gray-600">Voici un aperçu de votre système RH</p>
     </div>
 
     <!-- Stats Cards Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <!-- Employés Card -->
-        <div class="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 border border-gray-200">
-            <div class="flex items-start justify-between">
-                <div class="flex-1">
-                    <p class="text-sm font-medium text-gray-600 mb-1">Total Employés</p>
-                    <h3 class="text-3xl font-bold text-gray-900 mb-2">{{ $stats['total_employes'] ?? 0 }}</h3>
-                    <div class="flex items-center space-x-2">
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                            {{ $stats['employes_actifs'] ?? 0 }} actifs
-                        </span>
-                    </div>
-                </div>
-                <div class="flex-shrink-0">
-                    <div class="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center text-white">
-                        <span class="text-2xl">👥</span>
-                    </div>
+        <div class="bg-white rounded-lg p-6 border border-gray-200 hover:border-blue-500 transition-colors">
+            <div class="flex items-center justify-between mb-4">
+                <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center">
+                    <span class="text-2xl">👥</span>
                 </div>
             </div>
-            <div class="mt-4 pt-4 border-t border-gray-200">
-                <a href="{{ route('employes.index') }}" class="text-sm font-medium text-blue-600 hover:text-gray-900 transition-colors">
-                    Voir tous les employés →
-                </a>
-            </div>
+            <p class="text-sm text-gray-600 mb-1">Total Employés</p>
+            <h3 class="text-3xl font-semibold text-gray-900">{{ $stats['total_employes'] ?? 0 }}</h3>
+            <p class="text-sm text-green-600 mt-2">{{ $stats['employes_actifs'] ?? 0 }} actifs</p>
         </div>
 
         <!-- Absences Card -->
-        <div class="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 border border-gray-200">
-            <div class="flex items-start justify-between">
-                <div class="flex-1">
-                    <p class="text-sm font-medium text-gray-600 mb-1">Absences</p>
-                    <h3 class="text-3xl font-bold text-gray-900 mb-2">{{ $stats['total_absences'] ?? 0 }}</h3>
-                    <div class="flex items-center space-x-2">
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-200 text-gray-800">
-                            Aujourd'hui
-                        </span>
-                    </div>
-                </div>
-                <div class="flex-shrink-0">
-                    <div class="w-12 h-12 bg-gray-900 rounded-xl flex items-center justify-center text-white">
-                        <span class="text-2xl">⏰</span>
-                    </div>
+        <div class="bg-white rounded-lg p-6 border border-gray-200 hover:border-blue-500 transition-colors">
+            <div class="flex items-center justify-between mb-4">
+                <div class="w-12 h-12 bg-red-50 rounded-lg flex items-center justify-center">
+                    <span class="text-2xl">⏰</span>
                 </div>
             </div>
-            <div class="mt-4 pt-4 border-t border-gray-200">
-                <a href="{{ route('absences.index') }}" class="text-sm font-medium text-blue-600 hover:text-gray-900 transition-colors">
-                    Gérer les absences →
-                </a>
-            </div>
+            <p class="text-sm text-gray-600 mb-1">Absences</p>
+            <h3 class="text-3xl font-semibold text-gray-900">{{ $stats['total_absences'] ?? 0 }}</h3>
+            <p class="text-sm text-gray-500 mt-2">Aujourd'hui</p>
         </div>
 
         <!-- Congés Card -->
-        <div class="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 border border-gray-200">
-            <div class="flex items-start justify-between">
-                <div class="flex-1">
-                    <p class="text-sm font-medium text-gray-600 mb-1">Demandes de Congés</p>
-                    <h3 class="text-3xl font-bold text-gray-900 mb-2">{{ $congesStats['en_attente'] ?? 0 }}</h3>
-                    <div class="flex items-center space-x-2">
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                            En attente
-                        </span>
-                    </div>
-                </div>
-                <div class="flex-shrink-0">
-                    <div class="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center text-white">
-                        <span class="text-2xl">📅</span>
-                    </div>
+        <div class="bg-white rounded-lg p-6 border border-gray-200 hover:border-blue-500 transition-colors">
+            <div class="flex items-center justify-between mb-4">
+                <div class="w-12 h-12 bg-yellow-50 rounded-lg flex items-center justify-center">
+                    <span class="text-2xl">📅</span>
                 </div>
             </div>
-            <div class="mt-4 pt-4 border-t border-gray-200">
-                <a href="{{ route('conges.index') }}" class="text-sm font-medium text-blue-600 hover:text-gray-900 transition-colors">
-                    Traiter les demandes →
-                </a>
-            </div>
+            <p class="text-sm text-gray-600 mb-1">Demandes de Congés</p>
+            <h3 class="text-3xl font-semibold text-gray-900">{{ $congesStats['en_attente'] ?? 0 }}</h3>
+            <p class="text-sm text-yellow-600 mt-2">En attente</p>
         </div>
 
         <!-- Directions Card -->
-        <div class="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 border border-gray-200">
-            <div class="flex items-start justify-between">
-                <div class="flex-1">
-                    <p class="text-sm font-medium text-gray-600 mb-1">Directions</p>
-                    <h3 class="text-3xl font-bold text-gray-900 mb-2">{{ $stats['total_directions'] ?? 0 }}</h3>
-                    <div class="flex items-center space-x-2">
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-200 text-gray-800">
-                            Départements
-                        </span>
-                    </div>
-                </div>
-                <div class="flex-shrink-0">
-                    <div class="w-12 h-12 bg-gray-900 rounded-xl flex items-center justify-center text-white">
-                        <span class="text-2xl">🏢</span>
-                    </div>
+        <div class="bg-white rounded-lg p-6 border border-gray-200 hover:border-blue-500 transition-colors">
+            <div class="flex items-center justify-between mb-4">
+                <div class="w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center">
+                    <span class="text-2xl">🏢</span>
                 </div>
             </div>
-            <div class="mt-4 pt-4 border-t border-gray-200">
-                <a href="{{ route('directions.index') }}" class="text-sm font-medium text-blue-600 hover:text-gray-900 transition-colors">
-                    Voir les directions →
-                </a>
-            </div>
+            <p class="text-sm text-gray-600 mb-1">Directions</p>
+            <h3 class="text-3xl font-semibold text-gray-900">{{ $stats['total_directions'] ?? 0 }}</h3>
+            <p class="text-sm text-gray-500 mt-2">Départements</p>
         </div>
     </div>
 
     <!-- Charts Section -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Main Chart - Larger -->
-        <div class="lg:col-span-2 bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
-            <div class="flex items-center justify-between mb-6">
-                <div>
-                    <h3 class="text-lg font-semibold text-gray-900">Employés par Direction</h3>
-                    <p class="text-sm text-gray-600 mt-1">Répartition du personnel</p>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <button class="px-3 py-1.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-gray-900 transition-colors">
-                        Ce mois
-                    </button>
-                </div>
-            </div>
+        <div class="lg:col-span-2 bg-white rounded-lg p-6 border border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-900 mb-6">Employés par Direction</h3>
             <div class="relative" style="height: 300px;">
                 <canvas id="employesChart"></canvas>
             </div>
         </div>
 
-        <!-- Quick Stats -->
-        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">Statistiques Rapides</h3>
-            <div class="space-y-4">
-                <!-- Taux de présence -->
-                <div>
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-sm font-medium text-gray-600">Taux de présence</span>
-                        <span class="text-sm font-bold text-gray-900">
-                            {{ $stats['total_employes'] > 0 ? round((($stats['total_employes'] - ($stats['total_absences'] ?? 0)) / $stats['total_employes']) * 100, 1) : 0 }}%
-                        </span>
-                    </div>
-                    <div class="w-full bg-gray-200 rounded-full h-2.5">
-                        <div class="bg-blue-600 h-2.5 rounded-full transition-all duration-500"
-                             style="width: {{ $stats['total_employes'] > 0 ? round((($stats['total_employes'] - ($stats['total_absences'] ?? 0)) / $stats['total_employes']) * 100, 1) : 0 }}%"></div>
-                    </div>
-                </div>
+        <!-- Quick Actions -->
+        <div class="bg-white rounded-lg p-6 border border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Actions rapides</h3>
+            <div class="space-y-3">
+                <a href="{{ route('employes.create') }}" class="block w-full px-4 py-3 text-sm font-medium text-center text-white bg-blue-500 hover:bg-blue-600 rounded-lg transition-colors">
+                    + Nouvel employé
+                </a>
+                <a href="{{ route('conges.create') }}" class="block w-full px-4 py-3 text-sm font-medium text-center text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">
+                    + Nouvelle demande
+                </a>
+                <a href="{{ route('absences.create') }}" class="block w-full px-4 py-3 text-sm font-medium text-center text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">
+                    + Nouvelle absence
+                </a>
+            </div>
 
-                <!-- Congés approuvés -->
-                <div>
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-sm font-medium text-gray-600">Congés approuvés</span>
-                        <span class="text-sm font-bold text-gray-900">{{ $congesStats['approuves'] ?? 0 }}</span>
+            <div class="mt-6 pt-6 border-t border-gray-200">
+                <h4 class="text-sm font-semibold text-gray-900 mb-3">Statistiques</h4>
+                <div class="space-y-3">
+                    <div>
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-sm text-gray-600">Taux de présence</span>
+                            <span class="text-sm font-semibold text-gray-900">
+                                {{ $stats['total_employes'] > 0 ? round((($stats['total_employes'] - ($stats['total_absences'] ?? 0)) / $stats['total_employes']) * 100, 1) : 0 }}%
+                            </span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-green-500 h-2 rounded-full" style="width: {{ $stats['total_employes'] > 0 ? round((($stats['total_employes'] - ($stats['total_absences'] ?? 0)) / $stats['total_employes']) * 100, 1) : 0 }}%"></div>
+                        </div>
                     </div>
-                    <div class="w-full bg-gray-200 rounded-full h-2.5">
-                        <div class="bg-gray-900 h-2.5 rounded-full transition-all duration-500"
-                             style="width: {{ ($congesStats['total'] ?? 0) > 0 ? round((($congesStats['approuves'] ?? 0) / ($congesStats['total'] ?? 1)) * 100) : 0 }}%"></div>
-                    </div>
-                </div>
 
-                <!-- Formations en cours -->
-                <div>
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-sm font-medium text-gray-600">Formations actives</span>
-                        <span class="text-sm font-bold text-gray-900">{{ $stats['formations_actives'] ?? 0 }}</span>
-                    </div>
-                    <div class="w-full bg-gray-200 rounded-full h-2.5">
-                        <div class="bg-blue-600 h-2.5 rounded-full transition-all duration-500" style="width: 65%"></div>
-                    </div>
-                </div>
-
-                <!-- Actions rapides -->
-                <div class="pt-4 mt-4 border-t border-gray-200">
-                    <h4 class="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-3">Actions rapides</h4>
-                    <div class="space-y-2">
-                        <a href="{{ route('employes.create') }}" class="block w-full px-4 py-2 text-sm font-medium text-center text-white bg-blue-600 rounded-lg hover:bg-gray-900 transition-colors">
-                            + Nouvel employé
-                        </a>
-                        <a href="{{ route('conges.create') }}" class="block w-full px-4 py-2 text-sm font-medium text-center text-white bg-gray-900 rounded-lg hover:bg-blue-600 transition-colors">
-                            + Nouvelle demande
-                        </a>
+                    <div>
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-sm text-gray-600">Congés approuvés</span>
+                            <span class="text-sm font-semibold text-gray-900">{{ $congesStats['approuves'] ?? 0 }}</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-blue-500 h-2 rounded-full" style="width: {{ ($congesStats['total'] ?? 0) > 0 ? round((($congesStats['approuves'] ?? 0) / ($congesStats['total'] ?? 1)) * 100) : 0 }}%"></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Activity Feed & Upcoming Events -->
+    <!-- Activity Feed -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <!-- Recent Activity -->
-        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
-            <div class="flex items-center justify-between mb-5">
-                <h3 class="text-lg font-semibold text-gray-900">Activités Récentes</h3>
-                <span class="text-sm text-gray-600">Dernières 24h</span>
-            </div>
+        <div class="bg-white rounded-lg p-6 border border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Activités Récentes</h3>
             <div class="space-y-4">
+            <div class="space-y-3">
                 @forelse($derniersEmployes ?? [] as $employe)
-                <div class="flex items-start space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors border-l-4 border-blue-600">
+                <div class="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
                     <div class="flex-shrink-0">
-                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                            <span class="text-lg">✅</span>
+                        <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                            <span class="text-lg">👤</span>
                         </div>
                     </div>
                     <div class="flex-1 min-w-0">
-                        <p class="text-sm font-medium text-gray-900">
-                            Nouvel employé ajouté
-                        </p>
-                        <p class="text-sm text-gray-600 mt-1">
-                            <strong>{{ $employe->nom }} {{ $employe->prenom }}</strong>
-                        </p>
+                        <p class="text-sm font-medium text-gray-900">{{ $employe->nom }} {{ $employe->prenom }}</p>
+                        <p class="text-xs text-gray-600 mt-1">Nouvel employé</p>
                         <p class="text-xs text-gray-500 mt-1">{{ $employe->created_at->diffForHumans() }}</p>
                     </div>
                 </div>
                 @empty
+                <p class="text-sm text-gray-500 text-center py-4">Aucune activité récente</p>
                 @endforelse
 
-                @foreach(($congesEnAttente ?? collect())->take(3) as $conge)
-                <div class="flex items-start space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors border-l-4 border-gray-900">
+                @foreach(($congesEnAttente ?? collect())->take(2) as $conge)
+                <div class="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
                     <div class="flex-shrink-0">
-                        <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
+                        <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
                             <span class="text-lg">📅</span>
                         </div>
                     </div>
                     <div class="flex-1 min-w-0">
-                        <p class="text-sm font-medium text-gray-900">
-                            Demande de congé
-                        </p>
-                        <p class="text-sm text-gray-600 mt-1">
-                            <strong>{{ $conge->employe->nom ?? 'N/A' }} {{ $conge->employe->prenom ?? '' }}</strong>
-                        </p>
+                        <p class="text-sm font-medium text-gray-900">{{ $conge->employe->nom ?? 'N/A' }} {{ $conge->employe->prenom ?? '' }}</p>
+                        <p class="text-xs text-gray-600 mt-1">Demande de congé</p>
                         <p class="text-xs text-gray-500 mt-1">{{ $conge->created_at->diffForHumans() }}</p>
                     </div>
                 </div>
                 @endforeach
+            </div>
 
                 @if(($derniersEmployes ?? collect())->isEmpty() && ($congesEnAttente ?? collect())->isEmpty())
                 <div class="text-center py-8">
@@ -253,10 +165,10 @@
         </div>
 
         <!-- Upcoming Events -->
-        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
-            <div class="flex items-center justify-between mb-5">
+        <div class="bg-white rounded-lg p-6 border border-gray-200">
+            <div class="flex items-center justify-between mb-4">
                 <h3 class="text-lg font-semibold text-gray-900">Événements à Venir</h3>
-                <a href="{{ route('evenements.index') }}" class="text-sm font-medium text-blue-600 hover:text-gray-900 transition-colors">
+                <a href="{{ route('evenements.index') }}" class="text-sm font-medium text-blue-500 hover:text-blue-600">
                     Voir tout
                 </a>
             </div>
@@ -313,14 +225,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const labels = employesParDirection.map(d => d.nom_direction);
     const data = employesParDirection.map(d => d.employes_count);
 
-    // Couleurs charte graphique: Bleu, Blanc et Noir
+    // Couleurs minimalistes
     const colors = [
-        'rgba(37, 99, 235, 0.9)',    // blue-600
-        'rgba(17, 24, 39, 0.9)',     // gray-900 (noir)
-        'rgba(59, 130, 246, 0.9)',   // blue-500
-        'rgba(55, 65, 81, 0.9)',     // gray-700
-        'rgba(96, 165, 250, 0.9)',   // blue-400
-        'rgba(31, 41, 55, 0.9)',     // gray-800
+        'rgba(59, 130, 246, 0.8)',   // blue-500
+        'rgba(147, 197, 253, 0.8)',  // blue-300
+        'rgba(96, 165, 250, 0.8)',   // blue-400
+        'rgba(37, 99, 235, 0.8)',    // blue-600
+        'rgba(191, 219, 254, 0.8)',  // blue-200
+        'rgba(29, 78, 216, 0.8)',    // blue-700
     ];
 
     new Chart(ctx, {
@@ -347,9 +259,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     padding: 12,
                     titleColor: '#ffffff',
                     bodyColor: '#ffffff',
-                    borderColor: '#2563eb',
-                    borderWidth: 2,
-                    cornerRadius: 8,
+                    borderColor: 'rgba(59, 130, 246, 1)',
+                    borderWidth: 1,
+                    cornerRadius: 6,
                     displayColors: false,
                     callbacks: {
                         label: function(context) {
@@ -364,7 +276,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     ticks: {
                         color: '#6B7280',
                         font: {
-                            size: 12
+                            size: 11
                         },
                         precision: 0
                     },
@@ -375,9 +287,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
                 x: {
                     ticks: {
-                        color: '#6B7280',
+                        color: '#374151',
                         font: {
-                            size: 12
+                            size: 11
                         }
                     },
                     grid: {
